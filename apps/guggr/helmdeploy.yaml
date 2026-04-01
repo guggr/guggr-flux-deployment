@@ -1,0 +1,40 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: guggr
+  namespace: group6
+spec:
+  interval: 1m0s
+  url: https://helm.gug.gr/
+
+---
+
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: guggr
+  namespace: group6
+spec:
+  chart:
+    spec:
+      chart: guggr-chart
+      sourceRef:
+        kind: HelmRepository
+        name: guggr
+  interval: 1m0s
+  upgrade:
+    remediation:
+      retries: 5
+  rollback:
+    timeout: 5m
+    disableWait: false
+    disableHooks: false
+    recreate: false
+    force: false
+    cleanupOnFail: false
+  valuesFrom:
+    - kind: ConfigMap
+      name: guggr-helm-values
+      valuesKey: values.yaml
+
+---

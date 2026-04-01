@@ -1,0 +1,26 @@
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Provider
+metadata:
+  name: discord-bot
+  namespace: group6
+spec:
+  type: discord
+  secretRef:
+    name: discord-webhook-token
+
+---
+
+apiVersion: notification.toolkit.fluxcd.io/v1beta3
+kind: Alert
+metadata:
+  name: helm-guggr
+  namespace: group6
+spec:
+  providerRef:
+    name: discord-bot
+  eventSeverity: info
+  eventSources:
+  - kind: HelmRepository
+    name: guggr
+  - kind: HelmRelease
+    name: guggr

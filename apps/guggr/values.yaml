@@ -1,0 +1,56 @@
+rabbitmq:
+  replicaCount: 1
+  managementPlugin:
+    enabled: true
+  peerDiscoveryK8sPlugin:
+    enabled: true
+
+apiService:
+  autoscaling:
+    enabled: true
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-dns
+    hosts:
+      - host: guggr.k8s.p5p.eu
+        paths:
+          - path: /api
+            pathType: Prefix
+            pathType: Prefix
+    tls:
+      - hosts:
+        - guggr.k8s.p5p.eu
+        secretName: nginx-tls
+
+frontend:
+  autoscaling:
+    enabled: true
+  ingress:
+    enabled: true
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt-dns
+    hosts:
+      - host: guggr.k8s.p5p.eu
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+        - guggr.k8s.p5p.eu
+        secretName: nginx-tls
+
+agent:
+  logLevel: debug
+  autoscaling:
+    enabled: true
+
+evaluator:
+  logLevel: debug
+  autoscaling:
+    enabled: true
+
+scheduler:
+  logLevel: debug
+  autoscaling:
+    enabled: true
